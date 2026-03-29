@@ -6,20 +6,15 @@ import subprocess
 
 import os
 from dotenv import load_dotenv
-load_dotenv()
 
-def get_window_host():
-    res = subprocess.run(
-        ['ip' , 'route', 'show', 'default'],
-        capture_output=True,
-        text=True
-    )
-    return res.stdout.split()[2]
-
+# 自動讀取 .env 檔案中的環境變數
+# override=False : 已經有環境變數就不覆蓋，避免使用的被 .env 覆蓋
+load_dotenv(override=False)
 
 DB_CONFIG ={
     "host":       os.getenv("DB_HOST"),
-    "port":       os.getenv("DB_PORT"),
+    # 第二個是預設值
+    "port":       os.getenv("DB_PORT" , "5432"),
     "database":   os.getenv("DB_NAME"),
     "user":       os.getenv("DB_USER"),
     "password":   os.getenv("DB_PASSWORD")

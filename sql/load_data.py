@@ -1,22 +1,18 @@
 import pandas as pd
 import psycopg2
 from sqlalchemy import create_engine
-import subprocess
+import os
+from dotenv import load_dotenv
 
-def get_window_host():
-    res = subprocess.run(
-        ['ip' , 'route', 'show', 'default'],
-        capture_output=True,
-        text=True
-    )
-    return res.stdout.split()[2]
 
-DB_CONFIG = {
-    "host": get_window_host(),
-    "port": 5432,
-    "database": "db",
-    "user": "postgres",
-    "password": "benson0530"
+load_dotenv(override=False)
+
+DB_CONFIG ={
+    "host":       os.getenv("DB_HOST"),
+    "port":       os.getenv("DB_PORT" , "5432"),
+    "database":   os.getenv("DB_NAME"),
+    "user":       os.getenv("DB_USER"),
+    "password":   os.getenv("DB_PASSWORD")
 }
 
 COLUMNS = [
@@ -36,6 +32,7 @@ df_train = pd.read_csv(
     names=COLUMNS
 )
 
+# transform : 把結果對齊回原資料，讓每行都看得到
 df_train["rul"] = (
     df_train.groupby("unit_id")["cycle"].transform("max") - df_train["cycle"]
 )

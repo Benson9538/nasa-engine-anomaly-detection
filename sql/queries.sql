@@ -1,4 +1,3 @@
--- Active: 1774688185021@@172.25.112.1@5432@db
 
 1. 哪幾台引擎最危險
 SELECT
@@ -13,7 +12,7 @@ ORDER BY total_alerts DESC
 LIMIT 10;
 
 2. 哪個感測器最常觸發警報
-# SUM(COUNT(*)) OVER () : Total count of all groups
+# SUM(COUNT(*)) OVER () : Total count of all groups , () 空白表示對所有資料運算 0 ，不受 GROUP BY 影響
 SELECT
     sensor_name,
     COUNT(*) AS alerts_count,

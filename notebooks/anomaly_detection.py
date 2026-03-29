@@ -3,16 +3,7 @@ import subprocess
 
 import os
 from dotenv import load_dotenv
-load_dotenv()
-
-def get_window_host():
-    res = subprocess.run(
-        ['ip' , 'route', 'show', 'default'],
-        capture_output=True,
-        text=True
-    )
-    return res.stdout.split()[2]
-
+load_dotenv(override=False)
 
 COLUMNS = [
     "unit_id", "cycle",
