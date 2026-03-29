@@ -12,12 +12,12 @@ from dotenv import load_dotenv
 load_dotenv(override=False)
 
 DB_CONFIG ={
-    "host":       os.getenv("DB_HOST"),
+    "host":os.getenv("DB_HOST"),
     # 第二個是預設值
-    "port":       os.getenv("DB_PORT" , "5432"),
-    "database":   os.getenv("DB_NAME"),
-    "user":       os.getenv("DB_USER"),
-    "password":   os.getenv("DB_PASSWORD")
+    "port":os.getenv("DB_PORT" , "5432"),
+    "database":os.getenv("DB_NAME"),
+    "user":os.getenv("DB_USER"),
+    "password":os.getenv("DB_PASSWORD")
 }
 
 # 每次使用者互動都會重新執行 app.py , 透過 cache 只建立一次連線，沒改變就不重新處理

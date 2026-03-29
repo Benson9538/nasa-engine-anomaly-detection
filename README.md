@@ -11,3 +11,18 @@
 ## 目標
 
 透過感測器時序數據，偵測引擎退化異常，並以互動式 Dashboard 呈現分析結果
+
+## Docker 執行方式
+# 1. 複製環境變數範例
+cp .env.example .env
+# 填入自己的資料庫密碼
+
+# 2. 啟動容器
+docker compose up --build
+
+# 3. 載入資料
+docker compose exec app python notebooks/load_data.py
+docker compose exec app python notebooks/anomaly_detection.py
+
+# 4. 開啟瀏覽器
+# http://localhost:8501

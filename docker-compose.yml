@@ -1,0 +1,46 @@
+
+# 執行 Docker Compose 時指定用 .env.docker 的環境變數
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    # 本機 port : 容器 port
+    # 本機的 postgres 用了 5432，故改成 5433
+    ports:
+      - "5433:5432"
+    
+    # volumes 名稱 : 容器內的路徑 -> 將資料存在路徑中，重啟也不會消失
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # 每五秒執行一次 pg_isready 確認資料庫是否準備好，最多試五次，超過則失敗
+    healthcheck:
+      test: ["CMD-SHELL" , "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    # 用當前目錄(.) 的 dockerfile 來建構 image
+    build: .
+    # Streamlit port : 本機 port
+    ports:
+      - "8501:8501"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+    # app 依賴 db -> db 的 service_healthy 通過才啟動 app
+    depends_on:
+      db:
+        condition: service_healthy
+
+# 宣告 volumes : 資料不會因為容器重啟而消失
+volumes:
+  postgres_data:
