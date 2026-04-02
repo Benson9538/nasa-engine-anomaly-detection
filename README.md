@@ -21,7 +21,7 @@ cp .env.example .env
 docker compose up --build
 
 ### 3. 載入資料
-docker compose exec app python notebooks/load_data.py
+docker compose exec app python sql/load_data.py
 docker compose exec app python notebooks/anomaly_detection.py
 
 ### 4. 開啟瀏覽器，streamlit port 預設使用 8501 
