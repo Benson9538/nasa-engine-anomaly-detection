@@ -30,11 +30,13 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - DB_HOST=db
+      - DB_HOST=host.docker.internal
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
     # app 依賴 db -> db 的 service_healthy 通過才啟動 app
     depends_on:
